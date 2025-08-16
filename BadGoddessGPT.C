@@ -3,9 +3,12 @@
 *i'm too beginner
 *if you enter learn, it will learn
 *
+****************************************
+*
 *warGoddess300
 *
 *assembly language is king
+*
 *
 */
 
