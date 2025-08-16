@@ -10,6 +10,14 @@
 #include <string.h> //adding string header file
 #include <stdbool.h> //adding boolean header file
 
+/*to connect this program to the internet, i will have to include these header files (sockets)
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <unistd.h>
+*/
+
 #define FILENAME "password.txt"  //defining a macro for filename
 #define FILENAME2 "username.txt" 
 #define FILENAME3 "commands.txt" 
