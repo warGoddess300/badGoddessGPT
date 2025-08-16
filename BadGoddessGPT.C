@@ -3,12 +3,9 @@
 *i'm too beginner
 *if you enter learn, it will learn
 *
-****************************************
-*
 *warGoddess300
 *
 *assembly language is king
-*
 *
 */
 
@@ -16,8 +13,7 @@
 #include <stdio.h> //adding standard input output header file
 #include <string.h> //adding string header file
 #include <stdbool.h> //adding boolean header file
-//#include <openssl/sha.h> //adding openssl header file for sha256 hashing
-//i have a problem with openssl header file: undefined reference to `SHA256'
+#include <openssl/sha.h> //adding openssl header file for sha256 hashing
 
 /*to connect this program to the internet, i will have to include these header files (sockets)
 #include <sys/socket.h>
@@ -33,12 +29,22 @@
 #define FILENAME_h "hostname.txt" //defining a macro for hostname file
 #define FILENAME_Knowledge "knowledge.txt" //defining a macro for knowledge.txt file
 
+// Ajoute cette fonction dans ton fichier
+void sha256_string(const char *str, char *outputBuffer) {
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256((unsigned char*)str, strlen(str), hash);
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+        sprintf(outputBuffer + (i * 2), "%02x", hash[i]);
+    outputBuffer[64] = 0;
+}
+
 int main() {
 
 char username[50]; //declaring a type char variable to store username value
 char user_password[50]; //declaring a type char variable to store password value
 char user_input[50]; //declaring a type char variable to store user input value
 char hostname[50]; //declaring a type char variable to store hostname from user input
+
 
 //setting username if no username found in file
 
@@ -48,12 +54,14 @@ if (user_n == NULL) {
     printf("No username found. Please set your username: ");
     fgets(username, 50, stdin);
     username[strcspn(username, "\n")] = 0;
+    char hashed_username[65];
+    sha256_string(username, hashed_username);
     user_n = fopen(FILENAME2, "w");
     if (user_n == NULL) {
         printf("Error opening file for writing.\n");
         return 1;
     }
-    fprintf(user_n, "%s\n", username);
+    fprintf(user_n, "%s\n", hashed_username);
     printf("username saved successfully.\n");
     fclose(user_n);
 } else {
@@ -72,12 +80,14 @@ if (user_h == NULL) {
     printf("No hostname found. Please set your hostname: ");
     fgets(hostname, 50, stdin);
     hostname[strcspn(hostname, "\n")] = 0;
+    char hashed_hostname[65];
+    sha256_string(hostname, hashed_hostname);
     user_h = fopen(FILENAME_h, "w");
     if (user_h == NULL) {
         printf("Error opening file for writing.\n");
         return 1;
     }
-    fprintf(user_h, "%s\n", hostname);
+    fprintf(user_h, "%s\n", hashed_hostname);
     printf("hostname saved successfully.\n");
     fclose(user_h);
 } else {
@@ -96,12 +106,14 @@ if (user_p == NULL) {
     printf("No password found. Please set your password: ");
     fgets(user_password, 50, stdin);
     user_password[strcspn(user_password, "\n")] = 0;
+    char hashed_password[65];
+    sha256_string(user_password, hashed_password);
     user_p = fopen(FILENAME, "w");
     if (user_p == NULL) {
         printf("Error opening file for writing.\n");
         return 1;
     }
-    fprintf(user_p, "%s\n", user_password);
+    fprintf(user_p, "%s\n", hashed_password);
     printf("Password saved successfully.\n");
     fclose(user_p);
 } else {
@@ -122,6 +134,22 @@ if(strcmp(user_input, "quit") == 0) {
     printf("Program is terminating.\n");
     break;           
 }
+else if(strcmp(user_input, "add password") == 0) {
+    printf("Enter new password: ");
+    fgets(user_password, 50, stdin);
+    user_password[strcspn(user_password, "\n")] = 0;
+    char hashed_password[65];
+    sha256_string(user_password, hashed_password);
+    FILE *user_p = fopen(FILENAME, "w");
+    if (user_p == NULL) {
+        printf("Error opening password file for writing.\n");
+    } else {
+        fprintf(user_p, "%s\n", hashed_password);
+        printf("New password saved successfully.\n");
+        fclose(user_p);
+    }
+}
+
 else if(strcmp(user_input, "add command") == 0) {
         char new_command[50];
         printf("Learning new command, add a new command: ");
