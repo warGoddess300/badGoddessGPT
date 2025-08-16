@@ -2,6 +2,7 @@
 *incomplete bot, i wanna see if i can program an AI
 *i'm too beginner
 *warGoddess300
+*Assembly language is king
 *
 */
 
