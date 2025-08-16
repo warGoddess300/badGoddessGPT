@@ -1,7 +1,7 @@
 /*Programming badGoddessGPT
 *incomplete bot, i wanna see if i can program an AI
 *i'm too beginner
-*
+*warGoddess300
 *
 */
 
