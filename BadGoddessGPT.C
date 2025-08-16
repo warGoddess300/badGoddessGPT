@@ -1,8 +1,8 @@
 /*Programming badGoddessGPT
 *incomplete bot, i wanna see if i can program an AI
 *i'm too beginner
-*warGoddess300
-*Assembly language is king
+*if you enter learn, it will learn
+*
 *
 */
 
@@ -19,23 +19,28 @@
 #include <unistd.h>
 */
 
-#define FILENAME "password.txt"  //defining a macro for filename
-#define FILENAME2 "username.txt" 
-#define FILENAME3 "commands.txt" 
+#define FILENAME "password.txt"  //defining a macro for password.txt file
+#define FILENAME2 "username.txt" //defining a macro for username.txt file
+#define FILENAME3 "commands.txt" //defining a macro for commands.txt file
+#define FILENAME_h "hostname.txt" //defining a macro for hostname file
+#define FILENAME_Knowledge "knowledge.txt" //defining a macro for knowledge.txt file
 
 int main() {
 
 char username[50]; //declaring a type char variable to store username value
 char user_password[50]; //declaring a type char variable to store password value
 char user_input[50]; //declaring a type char variable to store user input value
+char hostname[50]; //declaring a type char variable to store hostname from user input
 
-FILE *user_n = fopen(FILENAME, "r");
+//setting username if no username found in file
+
+FILE *user_n = fopen(FILENAME2, "r");
 if (user_n == NULL) {
     // File does not exist, ask for username and save it
     printf("No username found. Please set your username: ");
     fgets(username, 50, stdin);
     username[strcspn(username, "\n")] = 0;
-    user_n = fopen(FILENAME, "w");
+    user_n = fopen(FILENAME2, "w");
     if (user_n == NULL) {
         printf("Error opening file for writing.\n");
         return 1;
@@ -50,6 +55,33 @@ if (user_n == NULL) {
     printf("username loaded from file.\n");
     fclose(user_n);
 }
+
+//setting hostname if no hostname found in file
+
+FILE *user_h = fopen(FILENAME_h, "r");
+if (user_h == NULL) {
+    // File does not exist, ask for username and save it
+    printf("No hostname found. Please set your hostname: ");
+    fgets(hostname, 50, stdin);
+    hostname[strcspn(hostname, "\n")] = 0;
+    user_h = fopen(FILENAME_h, "w");
+    if (user_h == NULL) {
+        printf("Error opening file for writing.\n");
+        return 1;
+    }
+    fprintf(user_h, "%s\n", hostname);
+    printf("hostname saved successfully.\n");
+    fclose(user_h);
+} else {
+    // File exists, load hostname
+    fgets(hostname, 50, user_h);
+    hostname[strcspn(hostname, "\n")] = 0;
+    printf("hostname loaded from file.\n");
+    fclose(user_h);
+}
+
+//setting password if no password found in file
+
 FILE *user_p = fopen(FILENAME, "r");
 if (user_p == NULL) {
     // File does not exist, ask for password and save it
@@ -74,9 +106,10 @@ if (user_p == NULL) {
 
 
 while(true) {
-printf("Enter a command: ");
+printf("(not a linux shell) %s@%s$ ", username, hostname);
 fgets(user_input, 50, stdin);
 user_input[strcspn(user_input, "\n")] = 0; // Remove newline character
+
 if(strcmp(user_input, "quit") == 0) {
     printf("Program is terminating.\n");
     break;           
@@ -132,6 +165,52 @@ else if(strcmp(user_input, "add command") == 0) {
             printf("Command deleted successfully.\n");
         else
             printf("Command not found.\n");
+    }
+        else if(strcmp(user_input, "learn") == 0) {
+        char question[100], answer[200];
+        printf("Enter the question: ");
+        fgets(question, 100, stdin);
+        question[strcspn(question, "\n")] = 0;
+        printf("Enter the answer: ");
+        fgets(answer, 200, stdin);
+        answer[strcspn(answer, "\n")] = 0;
+
+        FILE *knowledge = fopen(FILENAME_Knowledge, "a");
+        if (knowledge == NULL) {
+            printf("Error opening knowledge file.\n");
+            continue;
+        }
+        fprintf(knowledge, "%s|%s\n", question, answer); // format: question|answer
+        fclose(knowledge);
+        printf("Learned: \"%s\" → \"%s\"\n", question, answer);
+    }
+    else {
+        // Try to find an answer in knowledge.txt
+        FILE *knowledge = fopen(FILENAME_Knowledge, "r");
+        if (knowledge != NULL) {
+            char line[300];
+            int found = 0;
+            while (fgets(line, sizeof(line), knowledge)) {
+                char *sep = strchr(line, '|');
+                if (sep) {
+                    *sep = 0; // split question/answer
+                    char *question = line;
+                    char *answer = sep + 1;
+                    answer[strcspn(answer, "\n")] = 0;
+                    if (strcmp(user_input, question) == 0) {
+                        printf("%s\n", answer);
+                        found = 1;
+                        break;
+                    }
+                }
+            }
+            fclose(knowledge);
+            if (!found) {
+                printf("I don't know the answer yet.\n");
+            }
+        } else {
+            printf("No knowledge file found.\n");
+        }
     }
 
 
