@@ -16,6 +16,8 @@
 #include <stdio.h> //adding standard input output header file
 #include <string.h> //adding string header file
 #include <stdbool.h> //adding boolean header file
+//#include <openssl/sha.h> //adding openssl header file for sha256 hashing
+//i have a problem with openssl header file: undefined reference to `SHA256'
 
 /*to connect this program to the internet, i will have to include these header files (sockets)
 #include <sys/socket.h>
