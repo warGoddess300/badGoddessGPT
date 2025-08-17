@@ -1,4 +1,4 @@
-/*Programming badGoddessGPT
+/*Programming BadGoddessGPT
 *incomplete bot, i wanna see if i can program an AI
 *i'm too beginner
 *if you enter learn, it will learn
@@ -54,14 +54,12 @@ if (user_n == NULL) {
     printf("No username found. Please set your username: ");
     fgets(username, 50, stdin);
     username[strcspn(username, "\n")] = 0;
-    char hashed_username[65];
-    sha256_string(username, hashed_username);
     user_n = fopen(FILENAME2, "w");
     if (user_n == NULL) {
         printf("Error opening file for writing.\n");
         return 1;
     }
-    fprintf(user_n, "%s\n", hashed_username);
+    fprintf(user_n, "%s\n", username);
     printf("username saved successfully.\n");
     fclose(user_n);
 } else {
@@ -80,14 +78,12 @@ if (user_h == NULL) {
     printf("No hostname found. Please set your hostname: ");
     fgets(hostname, 50, stdin);
     hostname[strcspn(hostname, "\n")] = 0;
-    char hashed_hostname[65];
-    sha256_string(hostname, hashed_hostname);
     user_h = fopen(FILENAME_h, "w");
     if (user_h == NULL) {
         printf("Error opening file for writing.\n");
         return 1;
     }
-    fprintf(user_h, "%s\n", hashed_hostname);
+    fprintf(user_h, "%s\n", hostname);
     printf("hostname saved successfully.\n");
     fclose(user_h);
 } else {
@@ -224,7 +220,7 @@ else if(strcmp(user_input, "add command") == 0) {
         // Try to find an answer in knowledge.txt
         FILE *knowledge = fopen(FILENAME_Knowledge, "r");
         if (knowledge != NULL) {
-            char line[300];
+            char line[2000];
             int found = 0;
             while (fgets(line, sizeof(line), knowledge)) {
                 char *sep = strchr(line, '|');
@@ -234,7 +230,7 @@ else if(strcmp(user_input, "add command") == 0) {
                     char *answer = sep + 1;
                     answer[strcspn(answer, "\n")] = 0;
                     if (strcmp(user_input, question) == 0) {
-                        printf("%s\n", answer);
+                        printf("BadGoddessGPT: %s\n", answer);
                         found = 1;
                         break;
                     }
