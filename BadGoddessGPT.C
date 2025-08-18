@@ -1,5 +1,5 @@
 /*Programming BadGoddessGPT
-*incomplete bot, i wanna see if i can program an AI
+*incomplete bot,
 *i'm too beginner
 *if you enter learn, it will learn
 *
