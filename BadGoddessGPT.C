@@ -11,7 +11,7 @@
 #define FILENAME_h "hostname.txt" // FILENAME_h represents hostname.txt
 #define FILENAME_Knowledge "knowledge.txt" // FILENAME_Knowledge represents knowledge.txt
 
-// Ajoute cette fonction dans ton fichier
+// function to encrypt passwords
 void sha256_string(const char *str, char *outputBuffer) { 
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256((unsigned char*)str, strlen(str), hash);
