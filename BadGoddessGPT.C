@@ -80,45 +80,79 @@ char user_password[50];
 char user_input[50];
 char hostname[50];
 
+printf( R"EOF(
+        
+        
+        ⠀⠀⠀⠀⠀⢀⣤⣶⣾⣿⣿⣿⣷⣶⣤⡀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀        ⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀
+⠀⠀⠀⠀        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀
+⠀⠀⠀⠀        ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀
+⠀⠀⠀⠀        ⢰⡟⠛⠉⠙⢻⣿⡟⠋⠉⠙⢻⡇⠀⠀⠀⠀
+⠀⠀⠀⠀        ⢸⣷⣀⣀⣠⣾⠛⣷⣄⣀⣀⣼⡏⠀⠀⠀⠀
+⠀⠀⣀⠀⠀        ⠛⠋⢻⣿⣧⣤⣸⣿⡟⠙⠛⠀⠀⣀⠀⠀
+        ⢀⣰⣿⣦⠀⠀⠀⠼⣿⣿⣿⣿⣿⡷⠀⠀⠀⣰⣿⣆⡀
+        ⢻⣿⣿⣿⣧⣄⠀⠀⠁⠉⠉⠋⠈⠀⠀⣀⣴⣿⣿⣿⡿
+⠀⠀⠀       ⠈⠙⠻⣿⣶⣄⡀⠀⢀⣠⣴⣿⠿⠛⠉⠁⠀⠀
+⠀⠀⠀⠀⠀⠀⠀       ⠉⣻⣿⣷⣿⣟⠉⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀       ⢀⣠⣴⣿⠿⠋⠉⠙⠿⣷⣦⣄⡀⠀⠀⠀⠀
+       ⣴⣶⣶⣾⡿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣷⣶⣶⣦
+      ⠙⢻⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⡿⠋
+⠀⠀      ⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀
+
+  ____           _     _                    _    ____  __  __ 
+ / ___| ___   __| | __| | ___  ___ ___     / \  / ___||  \/  |
+| |  _ / _ \ / _` |/ _` |/ _ \/ __/ __|   / _ \ \___ \| |\/| |
+| |_| | (_) | (_| | (_| |  __/\__ \__ \  / ___ \ ___) | |  | |
+ \____|\___/ \__,_|\__,_|\___||___/___/ /_/   \_\____/|_|  |_|
+ _____  ___   ___                                             
+|___ / / _ \ / _ \                                            
+  |_ \| | | | | | |                                           
+ ___) | |_| | |_| |                                           
+|____/ \___/ \___/                                            
+
+
+        )EOF" );
+
+
 
 // Check if the files exist and read/write username, password, and hostname
 FILE *user_n = fopen(FILENAME2, "r");
 if (user_n == NULL) {
-    printf("No username found. Please set your username: ");
+    printf("\nNo username found. Please set your username: ");
     fgets(username, 50, stdin);
     username[strcspn(username, "\n")] = 0;
     user_n = fopen(FILENAME2, "w");
     if (user_n == NULL) {
-        printf("Error opening file for writing.\n");
+        printf("\nError opening file for writing.\n");
         return 1;
     }
     fprintf(user_n, "%s\n", username);
-    printf("username saved successfully.\n");
+    printf("\nusername saved successfully.\n");
     fclose(user_n);
 } else {
     fgets(username, 50, user_n);
     username[strcspn(username, "\n")] = 0;
-    printf("username loaded from file.\n");
+    printf("\nusername loaded from file.\n");
     fclose(user_n);
 }
 
 FILE *user_h = fopen(FILENAME_h, "r");
 if (user_h == NULL) {
-    printf("No hostname found. Please set your hostname: ");
+    printf("\nNo hostname found. Please set your hostname: ");
     fgets(hostname, 50, stdin);
     hostname[strcspn(hostname, "\n")] = 0;
     user_h = fopen(FILENAME_h, "w");
     if (user_h == NULL) {
-        printf("Error opening file for writing.\n");
+        printf("\nError opening file for writing.\n");
         return 1;
     }
     fprintf(user_h, "%s\n", hostname);
-    printf("hostname saved successfully.\n");
+    printf("\nhostname saved successfully.\n");
     fclose(user_h);
 } else {
     fgets(hostname, 50, user_h);
     hostname[strcspn(hostname, "\n")] = 0;
-    printf("hostname loaded from file.\n");
+    printf("\nhostname loaded from file.\n");
     fclose(user_h);
 }
 
