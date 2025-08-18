@@ -1,3 +1,14 @@
+/*Programming BadGoddessGPT
+*incomplete bot, i wanna see if i can program an AI
+*i'm too beginner
+*if you enter learn, it will learn
+*
+*warGoddess300
+*
+*assembly language is king
+*
+*/
+
 #include <stdio.h> // For printf, fopen, fgets, fclose, fprintf
 #include <string.h> // For strcmp, strcpy, strlen, fgets, strcspn
 #include <stdlib.h> // For malloc, free, realloc
