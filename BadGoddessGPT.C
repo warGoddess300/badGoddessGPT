@@ -1,37 +1,18 @@
-/*Programming BadGoddessGPT
-*incomplete bot, i wanna see if i can program an AI
-*i'm too beginner
-*if you enter learn, it will learn
-*
-*warGoddess300
-*
-*assembly language is king
-*
-*/
+#include <stdio.h> // For printf, fopen, fgets, fclose, fprintf
+#include <string.h> // For strcmp, strcpy, strlen, fgets, strcspn
+#include <stdlib.h> // For malloc, free, realloc
+#include <stdbool.h> //boolean header file, to check if a condition is true or false
+#include <openssl/sha.h> //to encrypt passwords, used with SHA256() function
+#include <ctype.h> // For tolower() function
 
-
-#include <stdio.h> //adding standard input output header file
-#include <string.h> //adding string header file
-#include <stdlib.h> //adding standard library header file
-#include <stdbool.h> //adding boolean header file
-#include <openssl/sha.h> //adding openssl header file for sha256 hashing
-
-/*to connect this program to the internet, i will have to include these header files (sockets)
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <unistd.h>
-*/
-
-#define FILENAME "password.txt"  //defining a macro for password.txt file
-#define FILENAME2 "username.txt" //defining a macro for username.txt file
-#define FILENAME3 "commands.txt" //defining a macro for commands.txt file
-#define FILENAME_h "hostname.txt" //defining a macro for hostname file
-#define FILENAME_Knowledge "knowledge.txt" //defining a macro for knowledge.txt file
+#define FILENAME "password.txt" //FILENAME represents passord.txt
+#define FILENAME2 "username.txt" //FILENAME2 represents username.txt
+#define FILENAME3 "commands.txt" //FILENAME3 represents commands.txt
+#define FILENAME_h "hostname.txt" // FILENAME_h represents hostname.txt
+#define FILENAME_Knowledge "knowledge.txt" // FILENAME_Knowledge represents knowledge.txt
 
 // Ajoute cette fonction dans ton fichier
-void sha256_string(const char *str, char *outputBuffer) {
+void sha256_string(const char *str, char *outputBuffer) { 
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256((unsigned char*)str, strlen(str), hash);
     for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
@@ -39,19 +20,56 @@ void sha256_string(const char *str, char *outputBuffer) {
     outputBuffer[64] = 0;
 }
 
+// Fonction pour convertir une chaîne en minuscules
+void to_lowercase(char *str) {
+    for (int i = 0; str[i]; i++) {
+        str[i] = tolower((unsigned char)str[i]);
+    }
+}
+
+// Function to read a dynamic line from a file
+char* read_dynamic_line(FILE* fp) {
+    size_t buffer_size = 50;
+    char* line = (char*)malloc(buffer_size);
+    if (!line) return NULL;
+
+    int c;
+    size_t current_len = 0;
+
+    while ((c = fgetc(fp)) != EOF && c != '\n') {
+        if (current_len + 1 >= buffer_size) {
+            buffer_size *= 2;
+            char* new_line = (char*)realloc(line, buffer_size);
+            if (!new_line) {
+                free(line);
+                return NULL;
+            }
+            line = new_line;
+        }
+        line[current_len++] = (char)c;
+    }
+
+    if (current_len > 0 || c == '\n') {
+        line[current_len] = '\0';
+        return line;
+    } else {
+        free(line);
+        return NULL;
+    }
+}
+
+
 int main() {
 
-char username[50]; //declaring a type char variable to store username value
-char user_password[50]; //declaring a type char variable to store password value
-char user_input[50]; //declaring a type char variable to store user input value
-char hostname[50]; //declaring a type char variable to store hostname from user input
+char username[50];
+char user_password[50];
+char user_input[50];
+char hostname[50];
 
 
-//setting username if no username found in file
-
+// ... (The rest of your code for username, hostname, and password setup) ...
 FILE *user_n = fopen(FILENAME2, "r");
 if (user_n == NULL) {
-    // File does not exist, ask for username and save it
     printf("No username found. Please set your username: ");
     fgets(username, 50, stdin);
     username[strcspn(username, "\n")] = 0;
@@ -64,18 +82,14 @@ if (user_n == NULL) {
     printf("username saved successfully.\n");
     fclose(user_n);
 } else {
-    // File exists, load username
     fgets(username, 50, user_n);
     username[strcspn(username, "\n")] = 0;
     printf("username loaded from file.\n");
     fclose(user_n);
 }
 
-//setting hostname if no hostname found in file
-
 FILE *user_h = fopen(FILENAME_h, "r");
 if (user_h == NULL) {
-    // File does not exist, ask for username and save it
     printf("No hostname found. Please set your hostname: ");
     fgets(hostname, 50, stdin);
     hostname[strcspn(hostname, "\n")] = 0;
@@ -88,18 +102,14 @@ if (user_h == NULL) {
     printf("hostname saved successfully.\n");
     fclose(user_h);
 } else {
-    // File exists, load hostname
     fgets(hostname, 50, user_h);
     hostname[strcspn(hostname, "\n")] = 0;
     printf("hostname loaded from file.\n");
     fclose(user_h);
 }
 
-//setting password if no password found in file
-
 FILE *user_p = fopen(FILENAME, "r");
 if (user_p == NULL) {
-    // File does not exist, ask for password and save it
     printf("No password found. Please set your password: ");
     fgets(user_password, 50, stdin);
     user_password[strcspn(user_password, "\n")] = 0;
@@ -114,7 +124,6 @@ if (user_p == NULL) {
     printf("Password saved successfully.\n");
     fclose(user_p);
 } else {
-    // File exists, load password
     fgets(user_password, 50, user_p);
     user_password[strcspn(user_password, "\n")] = 0;
     printf("Password loaded from file.\n");
@@ -123,31 +132,30 @@ if (user_p == NULL) {
 
 
 while(true) {
-printf("(not a linux shell) %s@%s$ ", username, hostname);
-fgets(user_input, 50, stdin);
-user_input[strcspn(user_input, "\n")] = 0; // Remove newline character
+    printf("(not a linux shell) %s@%s$ ", username, hostname);
+    fgets(user_input, 50, stdin);
+    user_input[strcspn(user_input, "\n")] = 0;
 
-if(strcmp(user_input, "quit") == 0) {
-    printf("Program is terminating.\n");
-    break;           
-}
-else if(strcmp(user_input, "add password") == 0) {
-    printf("Enter new password: ");
-    fgets(user_password, 50, stdin);
-    user_password[strcspn(user_password, "\n")] = 0;
-    char hashed_password[65];
-    sha256_string(user_password, hashed_password);
-    FILE *user_p = fopen(FILENAME, "w");
-    if (user_p == NULL) {
-        printf("Error opening password file for writing.\n");
-    } else {
-        fprintf(user_p, "%s\n", hashed_password);
-        printf("New password saved successfully.\n");
-        fclose(user_p);
+    if(strcmp(user_input, "quit") == 0) {
+        printf("Program is terminating.\n");
+        break;
     }
-}
-
-else if(strcmp(user_input, "add command") == 0) {
+    else if(strcmp(user_input, "add password") == 0) {
+        printf("Enter new password: ");
+        fgets(user_password, 50, stdin);
+        user_password[strcspn(user_password, "\n")] = 0;
+        char hashed_password[65];
+        sha256_string(user_password, hashed_password);
+        FILE *user_p = fopen(FILENAME, "w");
+        if (user_p == NULL) {
+            printf("Error opening password file for writing.\n");
+        } else {
+            fprintf(user_p, "%s\n", hashed_password);
+            printf("New password saved successfully.\n");
+            fclose(user_p);
+        }
+    }
+    else if(strcmp(user_input, "add command") == 0) {
         char new_command[50];
         printf("Learning new command, add a new command: ");
         fgets(new_command, 50, stdin);
@@ -199,7 +207,7 @@ else if(strcmp(user_input, "add command") == 0) {
         else
             printf("Command not found.\n");
     }
-        else if(strcmp(user_input, "learn") == 0) {
+    else if(strcmp(user_input, "learn") == 0) {
         char question[100], answer[200];
         printf("Enter the question: ");
         fgets(question, 100, stdin);
@@ -221,22 +229,42 @@ else if(strcmp(user_input, "add command") == 0) {
         // Try to find an answer in knowledge.txt
         FILE *knowledge = fopen(FILENAME_Knowledge, "r");
         if (knowledge != NULL) {
-            size_t buffer_size = 2000;
-            char* line = malloc(buffer_size);
+            char *line;
             int found = 0;
-            while (fgets(line, sizeof(line), knowledge)) {
+
+            // Crée une copie de l'entrée utilisateur et la met en minuscules
+            char user_input_lower[50];
+            strcpy(user_input_lower, user_input);
+            to_lowercase(user_input_lower);
+            
+            while ((line = read_dynamic_line(knowledge)) != NULL) {
                 char *sep = strchr(line, '|');
                 if (sep) {
                     *sep = 0; // split question/answer
                     char *question = line;
                     char *answer = sep + 1;
-                    answer[strcspn(answer, "\n")] = 0;
-                    if (strcmp(user_input, question) == 0) {
-                        printf("BadGoddessGPT: %s\n", answer);
-                        found = 1;
+
+                    // Alloue de la mémoire sur le tas pour la copie de la question
+                    char *question_lower = (char*)malloc(strlen(question) + 1);
+                    if (question_lower) {
+                        strcpy(question_lower, question);
+                        to_lowercase(question_lower);
+
+                        // Compare les chaînes en minuscules
+                        if (strcmp(user_input_lower, question_lower) == 0) {
+                            printf("BadGoddessGPT: %s\n", answer);
+                            found = 1;
+                        }
+                        // Libère la mémoire pour la copie
+                        free(question_lower);
+                    }
+                    if (found) {
+                        free(line);
                         break;
                     }
                 }
+                // Libère la mémoire pour la ligne lue
+                free(line);
             }
             fclose(knowledge);
             if (!found) {
@@ -246,9 +274,6 @@ else if(strcmp(user_input, "add command") == 0) {
             printf("No knowledge file found.\n");
         }
     }
-
-
-
 }
 return 0;
-} // End of main function
+}
