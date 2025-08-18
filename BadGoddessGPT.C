@@ -12,6 +12,7 @@
 
 #include <stdio.h> //adding standard input output header file
 #include <string.h> //adding string header file
+#include <stdlib.h> //adding standard library header file
 #include <stdbool.h> //adding boolean header file
 #include <openssl/sha.h> //adding openssl header file for sha256 hashing
 
@@ -220,7 +221,8 @@ else if(strcmp(user_input, "add command") == 0) {
         // Try to find an answer in knowledge.txt
         FILE *knowledge = fopen(FILENAME_Knowledge, "r");
         if (knowledge != NULL) {
-            char line[2000];
+            size_t buffer_size = 2000;
+            char* line = malloc(buffer_size);
             int found = 0;
             while (fgets(line, sizeof(line), knowledge)) {
                 char *sep = strchr(line, '|');
