@@ -11,7 +11,7 @@
 #define FILENAME_h "hostname.txt" // FILENAME_h represents hostname.txt
 #define FILENAME_Knowledge "knowledge.txt" // FILENAME_Knowledge represents knowledge.txt
 
-// function to encrypt passwords
+// function to encrypt password 
 void sha256_string(const char *str, char *outputBuffer) { 
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256((unsigned char*)str, strlen(str), hash);
@@ -20,7 +20,10 @@ void sha256_string(const char *str, char *outputBuffer) {
     outputBuffer[64] = 0;
 }
 
-// Fonction pour convertir une chaîne en minuscules
+// function to convert a string to lowercase
+// This function iterates through each character in the string and converts it to lowercase.
+// It uses the tolower() function from the ctype.h library, which is designed to
+// handle character case conversion in a locale-independent manner.
 void to_lowercase(char *str) {
     for (int i = 0; str[i]; i++) {
         str[i] = tolower((unsigned char)str[i]);
@@ -67,7 +70,7 @@ char user_input[50];
 char hostname[50];
 
 
-// ... (The rest of your code for username, hostname, and password setup) ...
+// Check if the files exist and read/write username, password, and hostname
 FILE *user_n = fopen(FILENAME2, "r");
 if (user_n == NULL) {
     printf("No username found. Please set your username: ");
@@ -232,7 +235,7 @@ while(true) {
             char *line;
             int found = 0;
 
-            // Crée une copie de l'entrée utilisateur et la met en minuscules
+            // Convert user input to lowercase for case-insensitive comparison
             char user_input_lower[50];
             strcpy(user_input_lower, user_input);
             to_lowercase(user_input_lower);
@@ -244,18 +247,18 @@ while(true) {
                     char *question = line;
                     char *answer = sep + 1;
 
-                    // Alloue de la mémoire sur le tas pour la copie de la question
+                    // Convert question to lowercase for case-insensitive comparison
                     char *question_lower = (char*)malloc(strlen(question) + 1);
                     if (question_lower) {
                         strcpy(question_lower, question);
                         to_lowercase(question_lower);
 
-                        // Compare les chaînes en minuscules
+                        // 
                         if (strcmp(user_input_lower, question_lower) == 0) {
                             printf("BadGoddessGPT: %s\n", answer);
                             found = 1;
                         }
-                        // Libère la mémoire pour la copie
+                        // free the memory allocated for question_lower
                         free(question_lower);
                     }
                     if (found) {
@@ -263,7 +266,7 @@ while(true) {
                         break;
                     }
                 }
-                // Libère la mémoire pour la ligne lue
+                // free the memory allocated for line
                 free(line);
             }
             fclose(knowledge);
