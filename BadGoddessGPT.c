@@ -9,7 +9,9 @@
 *
 */
 
-#include <stdio.h> // For printf, fopen, fgets, fclose, fprintf
+#include <stdio.h> // stdio.h is a header file to add the standard input/output library
+//printf, fopen, fgets, fclose, fprintf
+
 #include <string.h> // For strcmp, strcpy, strlen, fgets, strcspn
 #include <stdlib.h> // For malloc, free, realloc
 #include <stdbool.h> //boolean header file, to check if a condition is true or false
